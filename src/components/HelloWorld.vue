@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 
 const message = ref('Selamat pada belajar-!!')
 
@@ -11,6 +11,35 @@ const isDisabled = ref (true)
 
 const count = ref (8)
 const isVisible = ref(false)
+
+//pertemuan5
+const daftarBuah = ref(['Apel', 'Jeruk', 'Mangga']);
+
+const harga = ref(100);
+const diskon = ref(50);
+
+const hargaSetelahDiskon = computed(() => {
+  return harga.value - (harga.value * diskon.value / 100);
+});
+
+const email = ref('');
+watch(email, (newValue) => {
+  if(!newValue.includes('@')) {
+    console.log('Alamat email tidak valid-!!');
+  }
+});
+
+const myInput = ref(null);
+const fokusInput = () => {
+  if (myInput.value) {
+    myInput.value.focus();
+  }
+};
+
+onMounted(() => {
+  console.log('Komponen telah dimuat!');
+});
+
 </script>
 
 <template>
@@ -28,6 +57,29 @@ const isVisible = ref(false)
 
   <p v-show="isVisible">Teks ini dapat disembunyikan menggunakan v-Show</p>
   <button @click="isVisible = !isVisible">Tampilkan/Sembunyikan</button>
+
+  <hr>
+  <h1>Pertemuan5</h1>
+
+  <ul>
+    <li v-for="item in daftarBuah" :key="item">{{ item }}</li>
+  </ul>
+
+  <div>
+    <p>Harga awal : {{ harga }}</p>
+    <p>Diskon : {{ diskon }} %</p>
+    <p>Harga setelah diskon : {{ hargaSetelahDiskon }}</p>
+  </div>
+
+  <div>
+    <label for="email">Email : </label>
+    <input type="email" id="email" v-model="email"/>
+  </div>
+<br>
+  <div>
+    <input ref="myInput" />
+    <button @click="fokusInput">Fokus</button>
+  </div>
 </template>
 
 <style scoped>
